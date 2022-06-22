@@ -1,7 +1,9 @@
 import './App.css';
 import {useDispatch, useSelector} from "react-redux";
 import { addCustomerAction, removeCustomerAction } from './store/customerReducer';
+import { fetchCustomers } from './asyncActions/customers';
 
+// redux thunk это мидлваре, который помогает нам прокидовать диспатч во внутрь функции
 function App() {
 
   const dispatch = useDispatch()
@@ -36,12 +38,16 @@ function App() {
         <button onClick={() => addCash(Number(prompt()))}>Пополнить счет</button>
         <button onClick={() => getCash(Number(prompt()))}>Снять со счета</button>
         <button onClick={() => addCustomer(prompt())}>Добавить клиента</button>
-        <button onClick={() => getCash(Number(prompt()))}>Удалить клиента</button>
+        <button onClick={() => dispatch(fetchCustomers())}>Получить клиентов из базы</button>
       </div>
       {customers.length>0 ?
       <div>
         {customers.map(customer =>
-          <div onClick={() => removeCustomer(customer)} style={{fontSize: "2rem", border: '1px solid black', padding:"10px", marginTop:5}}>
+          <div 
+            onClick={() => removeCustomer(customer)} 
+            style={{fontSize: "2rem", border: '1px solid black', padding:"10px", marginTop:5}}
+            key={customer.id}
+          >
             {customer.name}
           </div>  
         )}
